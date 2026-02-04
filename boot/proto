@@ -48,13 +48,20 @@ $
 readme.txt ---755 0 0 ../readme.txt
 $
 
-: modestr
+: mkfs proto file format
+: boot sector (currently unused)
+: filsys_blks inode_blks swap_blks
+: root_dir
+: input_lines...
+: $
+:
+: input_line
+:   name modestr uid gid external_path
+: modestr (ex: d--755 or ---666)
 : ---     file
 : b--     block
 : c--     char
-: d--     directory   name    until $
+: d--     directory (adds next lines to directory until '$')
 :  u      setuid
 :   g     setgid
 :    666  mode
-:     uid
-:     gid
