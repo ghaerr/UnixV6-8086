@@ -6,7 +6,6 @@
  *  Adds swap blocks to proto file and extends filesystem image for it
  */
 #define uint    unsigned int    /* original source used 'char *' */
-#define int     short           /* int -> short for host compilation */
 #define debug(...)
 //#define debug   printf
 
@@ -403,12 +402,11 @@ rdfs(bno, bf)
 int *bf;
 {
 	int n;
-	extern int errno;
 
 	seek(fsi, bno*512, 0);
 	n = read(fsi, bf, 512);
 	if(n != 512) {
-		printf("read error: %d n=%d, errno=%d\n", bno, n, errno);
+		printf("read error: %d\n", bno);
 		exit();
 	}
 #if DEBUG
