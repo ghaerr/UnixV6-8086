@@ -403,12 +403,11 @@ rdfs(bno, bf)
 int *bf;
 {
 	int n;
-	extern int errno;
 
 	lseek(fsi, bno*512, 0);
 	n = read(fsi, bf, 512);
 	if(n != 512) {
-		printf("read error: %d n=%d, errno=%d\n", bno, n, errno);
+		printf("read error: %d\n", bno);
 		exit(1);
 	}
 #if DEBUG
