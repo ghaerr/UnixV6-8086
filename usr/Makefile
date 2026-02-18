@@ -5,7 +5,7 @@
 # ==========================================================================
 
 CC = wcc
-CFLAGS = -wcd=107 -ms -0 -s -zls -ecc -zp1 -bt=dos -ohs -zq -j -zl -fo=.obj
+CFLAGS = -wcd=107 -wcd=131 -ms -0 -s -ze -zls -ecc -zp1 -bt=dos -ohs -zq -j -zl -fo=.obj
 LD = wlink
 LDFLAGS = SYSTEM dos com FILE startup.obj LIBRARY unix OPTION map,nodefaultlibs
 

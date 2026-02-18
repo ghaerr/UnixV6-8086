@@ -485,7 +485,7 @@ int *adbc, *db, *aibc, *ib;
 
 	db[*adbc] = ino;
 	(*adbc)++;
-	s = &db[*adbc];
+	s = (char *)&db[*adbc];
 	for(i=0; i<14; i++) {
 		*s++ = *str;
 		if(*str != '\0')
