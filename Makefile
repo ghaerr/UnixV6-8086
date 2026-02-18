@@ -23,7 +23,7 @@ m86.obj: dmr/m86.asm
 .c.obj :
 	$(CC) $(CFLAGS) $<
 
-OBJS = bio.obj ide.obj kbd.obj kl.obj pc.obj rk.obj tty.obj uart.obj &
+OBJS = bio.obj ide.obj kbd.obj kl.obj mem.obj pc.obj rk.obj tty.obj uart.obj &
 	alloc.obj clock.obj fio.obj iget.obj main.obj malloc.obj nami.obj &
 	pipe.obj prf.obj rdwri.obj sig.obj slp.obj subr.obj sys1.obj &
 	sys2.obj sys3.obj sys4.obj sysent.obj text.obj trap.obj 

@@ -253,6 +253,11 @@ int klsgtty(int dev, int *v);
 void kltxintr(void);
 void klrxintr(void);
 
+/* mem.c */
+int mmread(int dev);
+int mmwrite(int dev);
+int mmsgtty(int dev, int *v);
+
 /* rk.c */
 void rkstrategy(struct buf *abp);
 void rkintr(void);

@@ -40,6 +40,7 @@ struct bdevsw bdevsw[] = {
 
 struct cdevsw cdevsw[] = {
     { klopen, klclose, klread, klwrite, klsgtty },
+    { nulldev, nulldev, mmread, mmwrite, mmsgtty },
     { NULL, NULL, NULL, NULL, NULL }
 };
 
