@@ -36,6 +36,7 @@
 #define SYS_sync       36
 #define SYS_kill       37
 #define SYS_switch     38
+#define SYS_getkaddr   39
 
 #define SYS_dup        41
 #define SYS_pipe       42
@@ -231,6 +232,11 @@ int kill(int pid, int signalNo)
 {
     syscall(SYS_kill, pid, signalNo);
     return r3;
+}
+
+int getkaddr(int id)
+{
+    return syscall(SYS_getkaddr, id);
 }
 
 int dup(int fd)

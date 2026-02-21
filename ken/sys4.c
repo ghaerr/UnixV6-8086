@@ -239,3 +239,21 @@ profil()
     u.u_prof[3] = (u.u_arg[3]>>1) & 077777; /* pc scale */
 }
 #endif
+
+/*
+ * Get Kernel Address
+ * id 0: proc array
+ * id 1: swapdev
+ */
+void getkaddr(void)
+{
+    int id;
+
+    id = u.u_ar0[R0];
+    if (id == 0)
+        u.u_ar0[R0] = (int)proc;
+    else if (id == 1)
+        u.u_ar0[R0] = (int)&swapdev;
+    else
+        u.u_ar0[R0] = 0;
+}

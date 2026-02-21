@@ -22,6 +22,7 @@ bin     d--755 0 0
         more        ---755 0 0 ../usr/more.com
         mount       ---755 0 0 ../usr/mount.com
         nice        ---755 0 0 ../usr/nice.com
+        ps          ---755 0 0 ../usr/ps.com
         pwd         ---755 0 0 ../usr/pwd.com
         sh          ---755 0 0 ../usr/sh.com
         sigtest     ---755 0 0 ../usr/sigtest.com
@@ -38,6 +39,9 @@ dev     d--755 0 0
         rk1     b--644 0 0 0 1
         rk2     b--644 0 0 0 2
         rk3     b--644 0 0 0 3
+        mem     c--644 0 0 1 0
+        kmem    c--644 0 0 1 1
+        null    c--644 0 0 1 2
         $
 etc     d--755 0 0
 $

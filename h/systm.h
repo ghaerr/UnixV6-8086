@@ -197,6 +197,7 @@ void chown(void);
 void ssig(void);
 void kill(void);
 void times(void);
+void getkaddr(void);
 
 /* slp.c */
 void swtch(void);

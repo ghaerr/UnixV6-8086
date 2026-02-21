@@ -20,6 +20,7 @@ Unix360.img: ../unix.com bootsect.asm
 
 unix.img: proto ../tools/mkfs
 	../tools/mkfs unix.img proto
+	dd if=/dev/zero of=unix.img bs=1 count=1 seek=10321919 conv=notrunc
 
 b: .symbolic Unix360.img unix.img
 	bochs -qf bochs.rc

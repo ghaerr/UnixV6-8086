@@ -116,6 +116,7 @@ int nice(int value);
 int sleep(int nTicks);
 int sync(void);
 int kill(int pid, int signalNo);
+int getkaddr(int id);
 int dup(int fd);
 int pipe(int fd[2]);
 int setgid(int gid);
