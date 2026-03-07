@@ -58,7 +58,7 @@ void dpadd(int *a, int b)
     a[0] = (int)hi;
 }
 
-uint ldiv(uint ah, uint al, uint bl, uint *rem) 
+static uint ldiv(uint ah, uint al, uint bl, uint *rem)
 {
     int i;
     uint quotient = 0;

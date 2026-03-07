@@ -8,7 +8,7 @@ struct mtab {
     char    spec[NAMSIZ];
 } mtab[NMOUNT];
 
-main(argc, argv)
+int main(argc, argv)
 char **argv;
 {
     register int ro;
@@ -22,18 +22,18 @@ char **argv;
         for (mp = mtab; mp < &mtab[NMOUNT]; mp++)
             if (mp->file[0])
                 printf("%s on %s\n", mp->spec, mp->file);
-        return;
+        return 0;
     }
     if(argc < 3) {
         printf("arg count\n");
-        return;
+        return 1;
     }
     ro = 0;
     if(argc > 3)
         ro++;
     if(mount(argv[1], argv[2], ro) < 0) {
         perror("mount");
-        return;
+        return 1;
     }
     np = argv[1];
     while(*np++)
@@ -58,7 +58,7 @@ char **argv;
             while ((--mp)->file[0] == 0);
             mf = creat("/etc/mtab", 0644);
             write(mf, mtab, (mp-mtab+1)*2*NAMSIZ);
-            return;
+            return 0;
         }
     }
 }

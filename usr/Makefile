@@ -1,42 +1,38 @@
-# ==========================================================================
-# NOTE: This Makefile requires Open Watcom 'wmake'.
-# It uses specific syntax (like .symbolic, %make, & line continuation)
-# that is not compatible with GNU make or Microsoft nmake.
-# ==========================================================================
+# /usr Makefile
 
-CC = wcc
-CFLAGS = -wcd=107 -wcd=131 -ms -0 -s -ze -zls -ecc -zp1 -bt=dos -ohs -zq -j -zl -fo=.obj
-LD = wlink
-LDFLAGS = SYSTEM dos com FILE startup.obj LIBRARY unix OPTION map,nodefaultlibs
+############# Standard Section for IA16 C ##############
 
-.EXTENSIONS:
-.EXTENSIONS: .com .obj .asm .c
+CC = ia16-elf-gcc
+LD = ia16-elf-gcc
+CLBASE = -Os -melks-libc -mtune=i8086 -mcmodel=small
+CLBASE += -mno-segment-relocation-stuff -fno-inline -fno-builtin -nostdlib
+WARNINGS = -Wno-implicit-int -Wno-implicit-function-declaration
+INCLUDES =
+DEFINES =
+CFLAGS = $(CLBASE) $(WARNINGS) $(INCLUDES) $(DEFINES) $(LOCALFLAGS)
+LDLIBS =
 
-.obj.com:
-	$(LD) @<<
-$(LDFLAGS) FILE $< NAME $@
-<<
-.c.obj:
-	$(CC) @<<
-$(CFLAGS) $<
-<<
-.asm.obj:
-	wasm -bt=DOS -mt -0 $< -fo=$@
+%.com: %.c
+	$(CC) $(CFLAGS) $(STARTUP) $^ -o $@ $(LIBS) $(LDLIBS)
 
-BINS = init.com sh.com ls.com cat.com wc.com echo.com pwd.com kill.com date.com
-BINS += rm.com login.com cp.com chmod.com mkdir.com sync.com id.com zombie.com
-BINS += mount.com umount.com forktest.com sigtest.com stty.com more.com fib.com
-BINS += ln.com nice.com mknod.com sleep.com grep.com ps.com
-BINS += mkfs.com
+SOURCES=$(PROGS:.com=.c)
+#OBJECTS=$(SOURCES:.c=.o)
 
-all : .symbolic clean unix.lib $(BINS)
+############# End of Standard Section ##############
 
-OBJS = syscall.obj ulib.obj ctime.obj printf.obj
+LOCALFLAGS = -Wno-multichar
 
-unix.lib : $(OBJS) startup.obj
-	wlib @<<
--q -fo unix.lib $(OBJS)
-<<
+PROGS = init.com sh.com ls.com cat.com wc.com echo.com pwd.com kill.com date.com
+PROGS += rm.com login.com cp.com chmod.com mkdir.com sync.com id.com zombie.com
+PROGS += mount.com umount.com forktest.com sigtest.com stty.com more.com fib.com
+PROGS += ln.com nice.com mknod.com sleep.com grep.com ps.com
+PROGS += mkfs.com
 
-clean : .symbolic
-	rm -f *.obj *.err *.com *.lib *.map
+STARTUP = startup.s
+LIBS = syscall.c ulib.c ctime.c printf.c
+
+.PHONY: all
+all: $(OBJECTS) $(PROGS)
+
+clean:
+	rm -f *.com *.o
