@@ -1,4 +1,4 @@
-# kernel Makefile
+# master and kernel Makefile
 
 CC = wcc
 CFLAGS = -i=h -ms -0 -s -zls -ecc -bt=dos -ohs -zq -j -zl
@@ -9,6 +9,13 @@ LDFLAGS = SYSTEM dos com OPTION map,nodefaultlibs
 	$(CC) $(CFLAGS) $^ -fo=$@
 
 all: unix.com
+	make -C usr
+	make -C boot
+
+b: all
+	make -C boot b
+
+######### kernel build #########
 
 dmr/m86.obj: dmr/m86.asm
 	wasm -bt=DOS -mt -0 $< -fo=$@
@@ -49,3 +56,5 @@ unix.com: dmr/m86.obj $(OBJS)
 
 clean:
 	rm -f ken/*.obj dmr/*.obj *.com *.map *.err
+	make -C usr clean
+	make -C boot clean

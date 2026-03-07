@@ -1,6 +1,10 @@
-# unix.img Makefile
+# ==========================================================================
+# NOTE: This Makefile requires Open Watcom 'wmake'.
+# It uses specific syntax (like .symbolic, %make, & line continuation)
+# that is not compatible with GNU make or Microsoft nmake.
+# ==========================================================================
 
-all : Unix360.img unix0_rk.img unix.img
+all : .symbolic Unix360.img unix0_rk.img unix.img
 
 # Build boot sector and generate floppy image
 Unix360.img: ../unix.com bootsect.asm
@@ -18,23 +22,23 @@ unix.img: proto ../tools/mkfs
 	../tools/mkfs unix.img proto
 	dd if=/dev/zero of=unix.img bs=1 count=1 seek=10321919 conv=notrunc
 
-b: Unix360.img unix.img
+b: .symbolic Unix360.img unix.img
 	bochs -qf bochs.rc
 
-q: Unix360.img unix.img
+q: .symbolic Unix360.img unix.img
 	qemu-system-i386 -curses -drive file=Unix360.img,format=raw,if=floppy -drive file=unix.img,format=raw,if=ide -boot a
 
 unix0_rk.img:
 	gunzip -c unix0_rk.img.gz > $@
 
-bochs: Unix360.img unix0_rk.img
+bochs: .symbolic Unix360.img unix0_rk.img
 	bochs -qf bochsrc.bxrc
 
-qemu: Unix360.img unix0_rk.img
+qemu: .symbolic Unix360.img unix0_rk.img
 	qemu-system-i386 -curses -drive file=Unix360.img,format=raw,if=floppy -drive file=unix0_rk.img,format=raw,if=ide -boot a
 
-qemu-uart: Unix360.img unix0_rk.img
+qemu-uart: .symbolic Unix360.img unix0_rk.img
 	qemu-system-i386 -curses -serial stdio -drive file=Unix360.img,format=raw,if=floppy -drive file=unix0_rk.img,format=raw,if=ide -boot a
 
-clean:
+clean: .symbolic
 	rm -f *.obj *.err *.com *.img *.txt ../tools/mkfs
