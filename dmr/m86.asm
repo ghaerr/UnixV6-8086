@@ -243,8 +243,9 @@ _move_to_user_mode proc    near
     mov sp, 0f000h
     sti
     mov ds, dx
+    add dx, 1000h       ; DSIZE * (PAGESIZ/16)
     push dx
-    mov ax, 0100h
+    xor ax, ax
     push ax
     retf
 _move_to_user_mode endp

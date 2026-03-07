@@ -59,7 +59,8 @@
  * cannot be changed
  */
 
-#define USIZE   16      /* page count of user block */
+#define USIZE   18      /* page count of user block */
+#define DSIZE   16      /* data segment page count = offset to code segment */
 #define PAGESIZ 4096    /* page size */
 #define USPACE  0x20    /* start of user space page */
 #define USTACK  0xF000  /* top of user stack */

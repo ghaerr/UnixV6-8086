@@ -291,7 +291,7 @@ int subyte(int addr, char ch);
 int suword(int addr, int value);
 void copyseg(uint src, uint dst);
 void clearseg(uint dst);
-void copyout(uint srcAddr, uint dstAddr, int iSize);
+void copyout(uint srcAddr, int iSize, uint dstAddr, uint dstSeg);
 void dpadd(int x[2], int y);
 int dpcmp(int xh, int xl, int yh, int yl);
 int ldiv(int x, int y);

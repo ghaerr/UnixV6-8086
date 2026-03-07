@@ -69,15 +69,19 @@ void exec(void)
     }
 
     /*
-     * read in first 8 bytes of file
-     * w0 = JMP Instruction
-     * w1 = 0x6146, magic number
-     * w2 = 0x676e, magic number
-     * w3 = JMP Instruction
+     * read in first 32 bytes of file
+     * w0 = 0x0301, magic number
+     * w1 = 0x0430, magic number
+     * w2 = header size
+     * w4 = text segment size
+     * w6 = data segment size
+     * w8 = bss size
+     * w10 = entry
+     * w13 = stack size
      */
 
-    u.u_base = (char *)&u.u_arg[0];
-    u.u_count = 8;
+    u.u_base = (char *)&u.u_hdr[0];
+    u.u_count = 32;
     u.u_offset[1] = 0;
     u.u_offset[0] = 0;
     u.u_segflg = 1;
@@ -85,17 +89,26 @@ void exec(void)
     u.u_segflg = 0;
     if(u.u_error)
         goto bad;
-    if(u.u_arg[1] != 0x6146 || u.u_arg[2] != 0x676e) {
+    if(u.u_hdr[0] != 0x0301 || u.u_hdr[1] != 0x0430 || u.u_hdr[2] != 0x20) {
         u.u_error = ENOEXEC;
+        goto bad;
+    }
+    if (u.u_hdr[4] >= (USIZE-16)*PAGESIZ) {
+        u.u_error = E2BIG;
         goto bad;
     }
 
     for(c=0; c<USIZE; c++)
         clearseg(u.u_procp->p_addr+c);
-    u.u_base = (char *)0x100;
-    u.u_offset[1] = 0;
-    u.u_count = ip->i_size1;
-    u.u_segflg = 0;
+
+    u.u_procp->p_addr += DSIZE;
+    u.u_base = (char *)0;
+    u.u_count = u.u_hdr[4];
+    readi(ip);
+    u.u_procp->p_addr -= DSIZE;
+
+    u.u_base = (char *)0;
+    u.u_count = u.u_hdr[6];
     readi(ip);
 
     /*
@@ -121,8 +134,8 @@ void exec(void)
     ds = u.u_procp->p_addr*(PAGESIZ/16);
     suword(ts + 0, ds);           /* ds */
     suword(ts + 2, ds);           /* es */
-    suword(ts + 18, 0x100);       /* ip */
-    suword(ts + 20, ds);          /* cs */
+    suword(ts + 18, u.u_hdr[10]); /* ip */
+    suword(ts + 20, ds+DSIZE*(PAGESIZ/16)); /* cs */
     suword(ts + 22, 0x200);       /* flag */
     u.u_stack[KSSIZE - 2] = ts;   /* sp */
 

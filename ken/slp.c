@@ -461,7 +461,7 @@ void estabur(uint addr)
     pu = (struct user far *)MK_FP(addr, USTACK);
     pu->u_stack[KSSIZE - 1] = addr;    /* SS */
     ctx = (struct ctx far *)MK_FP(addr, pu->u_stack[KSSIZE - 2]);
-    ctx->cs = addr;
+    ctx->cs = addr + DSIZE * (PAGESIZ/16);
     ctx->ds = addr;
     ctx->es = addr;
 }

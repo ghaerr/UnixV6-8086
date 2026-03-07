@@ -296,7 +296,7 @@ int	errno;
 void perror(char *s)
 {
 	register char *c;
-	register n;
+	register int n;
 
 	c = "Unknown error";
 	if(errno < sys_nerr)
@@ -313,7 +313,7 @@ void perror(char *s)
 int mkdir(char *d)
 {
     char pname[128], dname[128];
-    register i, slash = 0;
+    register int i, slash = 0;
 
     pname[0] = '\0';
     for(i = 0; d[i]; ++i)

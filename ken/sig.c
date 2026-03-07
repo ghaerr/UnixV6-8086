@@ -138,7 +138,7 @@ void psig(void)
         ustack = (int far *)MK_FP(u.u_stack[KSSIZE - 1], u.u_stack[KSSIZE - 2]);
         memcpy(ustack, &ustack[12], 24);
         ctx = (struct ctx far *)ustack;
-        ctx->ip = 0x106;
+        ctx->ip = 0x0006;
         ctx->si = p;
         ctx = (struct ctx far *)&ustack[12];
         /* ip, cs, flag = ax, flag, return address */

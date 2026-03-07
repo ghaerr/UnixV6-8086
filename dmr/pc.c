@@ -76,9 +76,9 @@ void clearseg(uint dst)
     memset(PAGE_ADDR(dst), 0, PAGESIZ);
 }
 
-void copyout(uint srcAddr, uint dstAddr, int iSize)
+void copyout(uint srcAddr, int iSize, uint dstAddr, uint dstSeg)
 {
-    memcpy(MK_FP(u.u_procp->p_addr*(PAGESIZ/16), dstAddr), MK_FP(core_cs, srcAddr), iSize);
+    memcpy(MK_FP(dstSeg, dstAddr), MK_FP(core_cs, srcAddr), iSize);
 }
 
 typedef union {

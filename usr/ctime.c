@@ -187,8 +187,8 @@ int sunday(int *at, int ad)
 int *gmtime(int tim[])
 {
     int d0, d1;
-    register *tp;
-    static xtime[9];
+    register int *tp;
+    static int xtime[9];
 
     /*
      * break initial number into

@@ -34,7 +34,7 @@ void getdev(int swap_dev_num);
 int readproc(struct proc *p_proc, uint addr, int len, char *result);
 int readword(struct proc *p_proc, uint addr, int *result);
 
-main()
+int main()
 {
 	int i, puid;
     int proc_addr, swap_addr, swap_dev_num;
@@ -186,7 +186,7 @@ int prcom(int i)
 
 	/* Special handling for known processes */
 	if (proc[i].p_pid == 0) {
-		printf(" swaper");
+		printf(" swapper");
 		return(1);
 	}
 	if (proc[i].p_pid == 1) {

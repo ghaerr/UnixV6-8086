@@ -50,20 +50,26 @@ struct cdevsw cdevsw[] = {
  * to bring up the system.
  *
  * Disassembly:
- * 0100        B8 12 01         MOV AX, 0112h  ; argv
- * 0103        50               PUSH AX
- * 0104        B8 0D 01         MOV AX, 010Dh  ; prog
- * 0107        50               PUSH AX
- * 0108        BA 0B 00         MOV DX, 000Bh  ; sys_exec
- * 010B        CD 81            INT 81h        ; syscall exec(prog, argv)
- * 010D  prog: 69 6E 69 74 00   DB 'init\0'    ; program to exec
- * 0112  argv: 0D 01            DW av          ; argv[] array
- * 0114        00 00            DW 0           ; NULL
+ * CS:
+ * 0000        B8 07 00         MOV AX, 0007h  ; argv
+ * 0003        50               PUSH AX
+ * 0004        B8 02 00         MOV AX, 0002h  ; prog
+ * 0007        50               PUSH AX
+ * 0008        BA 0B 00         MOV DX, 000Bh  ; sys_exec
+ * 000B        CD 81            INT 81h        ; syscall exec(prog, argv)
+ * DS:
+ * 0000        00 00                           ; disallow NULL pointers to data
+ * 0002  prog: 69 6E 69 74 00   DB 'init\0'    ; program to exec
+ * 0007  argv: 02 00            DW av          ; argv[] array
+ * 0009        00 00            DW 0           ; NULL
  */
 char icode[] = {
-    0xB8, 0x12, 0x01, 0x50, 0xB8, 0x0D, 0x01, 0x50,
-    0xBA, 0x0B, 0x00, 0xCD, 0x81, 0x69, 0x6E, 0x69,
-    0x74, 0x00, 0x0D, 0x01, 0x00, 0x00
+    0xB8, 0x07, 0x00, 0x50, 0xB8, 0x02, 0x00, 0x50,
+    0xBA, 0x0B, 0x00, 0xCD, 0x81
+};
+char idata[] = {
+    0x00, 0x00, 0x69, 0x6E, 0x69, 0x74, 0x00, 0x02,
+    0x00, 0x00, 0x00
 };
 
 void main()
@@ -100,7 +106,8 @@ void main()
      */
 
     if(newproc()) {
-        copyout((uint)icode, 0x100, sizeof(icode));
+        copyout((uint)icode, sizeof(icode), 0, (u.u_procp->p_addr+DSIZE)*(PAGESIZ/16));
+        copyout((uint)idata, sizeof(idata), 0, u.u_procp->p_addr*(PAGESIZ/16));
         move_to_user_mode(u.u_procp->p_addr*(PAGESIZ/16));
         /*
          * Return goes to loc. 0 of user init
