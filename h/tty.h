@@ -49,7 +49,7 @@ extern char partab[];           /* ASCII table: parity, character class */
 #define CEOT    004
 #define CKILL   '@'
 #define CQUIT   033     /* ESC */
-#define CINTR   0177    /* DEL */
+#define CINTR   003     /* ^C */
 
 /* limits */
 #define TTHIWAT 50

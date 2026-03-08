@@ -19,7 +19,7 @@ unix.img: proto ../tools/mkfs
 	dd if=/dev/zero of=unix.img bs=1 count=1 seek=10321919 conv=notrunc
 
 b: Unix360.img unix.img
-	bochs -qf bochs.rc
+	-bochs -qf bochs.rc
 
 q: Unix360.img unix.img
 	qemu-system-i386 -curses -drive file=Unix360.img,format=raw,if=floppy -drive file=unix.img,format=raw,if=ide -boot a

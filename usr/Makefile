@@ -5,7 +5,7 @@
 CC = ia16-elf-gcc
 LD = ia16-elf-gcc
 CLBASE = -Os -melks-libc -mtune=i8086 -mcmodel=small
-CLBASE += -mno-segment-relocation-stuff -fno-inline -fno-builtin -nostdlib
+CLBASE += -mno-segment-relocation-stuff -fno-inline -fno-builtin -ffreestanding -nostdlib
 WARNINGS = -Wno-implicit-int -Wno-implicit-function-declaration
 INCLUDES =
 DEFINES =

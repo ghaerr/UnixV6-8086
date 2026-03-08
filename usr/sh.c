@@ -167,6 +167,7 @@ int main()
 {
     static char buf[100];
     
+    signal(SIGINT, SIG_IGN);
     if(getuid() == 0) prompt[0] = '#';
     while(getcmd(buf, sizeof(buf)) >= 0){
         if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){

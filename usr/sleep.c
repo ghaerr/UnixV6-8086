@@ -1,11 +1,17 @@
 #include "unix.h"
 
+void catch()
+{
+	printf("^C\n");
+}
+
 main(argc, argv)
 char **argv;
 {
 	int c, n;
 	char *s;
 
+	signal(SIGINT, catch);
 	n = 0;
 	if(argc < 2) {
 		printf("arg count\n");
@@ -20,4 +26,5 @@ char **argv;
 		n = n*10 + c - '0';
 	}
 	sleep(n);
+	printf("Done\n");
 }

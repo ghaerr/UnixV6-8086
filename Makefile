@@ -8,12 +8,23 @@ LDFLAGS = SYSTEM dos com OPTION map,nodefaultlibs
 %.obj: %.c
 	$(CC) $(CFLAGS) $^ -fo=$@
 
-all: unix.com
+all: unix.com usr boot
+
+.PHONY: usr
+usr:
 	make -C usr
+
+.PHONY: boot
+boot:
 	make -C boot
+
+.PHONY: kimage
+kimage: unix.com boot
 
 b: all
 	make -C boot b
+
+x: kclean kimage b
 
 ######### kernel build #########
 
@@ -54,7 +65,9 @@ OBJS =              \
 unix.com: dmr/m86.obj $(OBJS)
 	$(LD) $(LDFLAGS) NAME unix.com FILE dmr/m86.obj, $(OBJS:obj=obj,)
 
-clean:
+kclean:
 	rm -f ken/*.obj dmr/*.obj *.com *.map *.err
-	make -C usr clean
 	make -C boot clean
+
+clean: kclean
+	make -C usr clean

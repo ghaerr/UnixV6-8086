@@ -166,6 +166,8 @@ void idle(void)
 
 void putck(char c)
 { 
+    if (c == '\n')
+        putck('\r');
 #if defined(KL_BACKEND_UART)
     uart_putc(c);
 #else    

@@ -97,7 +97,7 @@ void main()
     u.u_cdir = iget(rootdev, ROOTINO);
     u.u_cdir->i_flag &= ~ILOCK;
 
-    printk("Unix Ready.\r\n");
+    printk("Unix Ready.\n");
 
     /*
      * make init process
