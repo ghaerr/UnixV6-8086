@@ -7,7 +7,7 @@
 
 #define FP_OFF(__p) ((unsigned)(__p))
 #define FP_SEG(__p) ((unsigned)((unsigned long)(void __far*)(__p) >> 16))
-#define MK_FP(__s,__o) (((unsigned short)(__s)):>((void __near *)(__o)))
+#define MK_FP(seg,off) ((((unsigned long)(void __far *)(seg)) << 16) | ((unsigned long)(unsigned int)(off)))
 
 #define disable()   { _asm cli }
 #define enable()    { _asm sti }
