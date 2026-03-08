@@ -23,7 +23,8 @@ void rkintr(void);
 static int io_sector;
 static int io_count;
 static int io_cmd;
-static int far *io_buf;
+static int *io_buf;
+static uint io_seg;
 
 /* Wait for IDE disk to become ready. */
 int idewait(int checkerr)
@@ -38,7 +39,7 @@ int idewait(int checkerr)
 }
 
 /* Start the request for IDE disk */
-void idestart(int sector, int far *data)
+void idestart(int sector, int *data, uint seg)
 {
     int i;
 
@@ -53,7 +54,7 @@ void idestart(int sector, int far *data)
     {
         outportb(0x1f7, IDE_CMD_WRITE);
         for (i = 0; i < 256; i++)
-            outport(0x1f0, data[i]);
+            outport(0x1f0, peekw(data+i, seg));
     }
     else
     {
@@ -65,10 +66,11 @@ void ideio(int sector, int count, char *buf, uint seg, int cmd)
 {
     io_sector = sector;
     io_count = count;
-    io_buf = (int far *)MK_FP(seg, buf);
+    io_buf = (int *)buf;
+    io_seg = seg;
     io_cmd = cmd;
 
-    idestart(io_sector, cmd == 0 ? io_buf : 0);
+    idestart(io_sector, cmd == 0 ? io_buf : 0, io_seg);
 }
 
 void ideintr(void)
@@ -81,14 +83,16 @@ void ideintr(void)
     if (io_cmd != 0)
     {
         for (i = 0; i < 256; i++)
-            io_buf[i] = inport(0x1f0);
+            pokew(io_buf+i, io_seg, inport(0x1f0));
     }
     io_buf += 256;
 
     if (io_count <= 0)
     {
         rkintr();
-    }else{
-        idestart(io_sector, io_cmd == 0 ? io_buf : 0);
+    }
+    else
+    {
+        idestart(io_sector, io_cmd == 0 ? io_buf : 0, io_seg);
     }
 }
