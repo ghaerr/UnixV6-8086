@@ -19,7 +19,7 @@ int mmread(int dev)
         else {
             bn = lshift(u.u_offset, -4);
             on = u.u_offset[1] & 0x0f;
-            c = *(char far *)MK_FP(bn, on);
+            c = peekb(on, bn);
         }
     } while(u.u_error==0 && passc(c)>=0);
 }
@@ -43,7 +43,7 @@ int mmwrite(int dev)
         else {
             bn = lshift(u.u_offset, -4);
             on = u.u_offset[1] & 0x0f;
-            *(char far *)MK_FP(bn, on) = c;
+            pokeb(on, bn, c);
         }
     }
 }

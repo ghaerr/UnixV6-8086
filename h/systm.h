@@ -317,7 +317,7 @@ int kbd_getc(void);
 void kbdintr(void);
 
 /* ide.c */
-void ideio(int sector, int count, char far *buf, int cmd);
+void ideio(int sector, int count, char *buf, uint seg, int cmd);
 void ideintr(void);
 
 /* uart.c */

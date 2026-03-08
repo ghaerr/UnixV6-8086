@@ -297,10 +297,12 @@ _fmemset endp
 ; uint peekb (uint off, uint seg)
 _peekb proc     near
     mov    dx,ds
+    mov    cx,bx
     mov    bx,sp
     lds    bx,[bx+2]
     mov    al,[bx]
     xor    ah,ah
+    mov    bx,cx
     mov    ds,dx
     ret
 _peekb endp
@@ -308,9 +310,11 @@ _peekb endp
 ; uint peekw (uint off, uint seg)
 _peekw proc     near
     mov    dx,ds
+    mov    cx,bx
     mov    bx,sp
     lds    bx,[bx+2]
     mov    ax,[bx]
+    mov    bx,cx
     mov    ds,dx
     ret
 _peekw endp
@@ -318,10 +322,12 @@ _peekw endp
 ; void pokeb (uint off, uint seg, byte__t val)
 _pokeb proc     near
     mov    dx,ds
+    mov    cx,bx
     mov    bx,sp
     mov    ax,[bx+6]
     lds    bx,[bx+2]
     mov    [bx],al
+    mov    bx,cx
     mov    ds,dx
     ret
 _pokeb endp
@@ -329,11 +335,13 @@ _pokeb endp
 ; void pokew (uint off, uint seg, uint val)
 _pokew proc     near
     mov    dx,ds
+    mov    cx,bx
     mov    bx,sp
     mov    ax,[bx+6]
     lds    bx,[bx+2]
     mov    [bx],ax
     mov    ds,dx
+    mov    bx,cx
     ret
 _pokew endp
 

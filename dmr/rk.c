@@ -84,15 +84,18 @@ void rkintr(void)
 void devstart(struct buf *bp)
 {
     unsigned int n;
-    void far *p;
+    void *off;
+    uint seg;
 
     if(bp->b_flags&B_PHYS) {
-        p = MK_FP((uint)(bp->b_xmem)*(PAGESIZ/16), 0);
+        seg = (uint)(bp->b_xmem)*(PAGESIZ/16);
+        off = 0;
         n = (PAGESIZ/512) * bp->b_wcount;
     } else {
-        p = MK_FP(core_cs, bp->b_addr);
+        seg = core_cs;
+        off = bp->b_addr;
         n = 1;
     }
 
-    ideio(bp->b_blkno + NRKBLK * minor(bp->b_dev), n, p, bp->b_flags&B_READ);
+    ideio(bp->b_blkno + NRKBLK * minor(bp->b_dev), n, off, seg, bp->b_flags&B_READ);
 }

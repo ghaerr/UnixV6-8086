@@ -42,7 +42,11 @@ void nullsys(void)
 void trap_epilogue(void)
 {
     struct ctx far *ctx;
-    ctx = (struct ctx far *)MK_FP(u.u_stack[KSSIZE - 1], u.u_stack[KSSIZE - 2]);
+    uint ss, sp;
+
+    ss = u.u_stack[KSSIZE - 1];
+    sp = u.u_stack[KSSIZE - 2];
+    ctx = (struct ctx far *)MK_FP(ss, sp);
     ctx->ax = u.u_ar0[R0];
     ctx->bx = u.u_ar0[R1];
     ctx->cx = u.u_ar0[R2];

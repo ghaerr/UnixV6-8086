@@ -1,3 +1,5 @@
+#include "os.h"
+
 /* Important bits in the status register of an ATA controller.
    See ATA/ATAPI-4 spec, section 7.15.6 */
 #define IDE_BSY 0x80
@@ -59,11 +61,11 @@ void idestart(int sector, int far *data)
     }
 }
 
-void ideio(int sector, int count, char far *buf, int cmd)
+void ideio(int sector, int count, char *buf, uint seg, int cmd)
 {
     io_sector = sector;
     io_count = count;
-    io_buf = (int far *)buf;
+    io_buf = (int far *)MK_FP(seg, buf);
     io_cmd = cmd;
 
     idestart(io_sector, cmd == 0 ? io_buf : 0);
