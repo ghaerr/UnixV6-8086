@@ -241,10 +241,10 @@ _move_to_user_mode proc    near
     mov dx, [bp+2]
     cli
     mov ss, dx
-    mov sp, 0f000h
+    mov sp, 0FC00h      ; USTACK
     sti
     mov ds, dx
-    add dx, 1000h       ; DSIZE * (PAGESIZ/16)
+    add dx, 1000h       ; CS = DSIZE * (PAGESIZ/16)
     push dx
     xor ax, ax
     push ax

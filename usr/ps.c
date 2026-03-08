@@ -199,8 +199,8 @@ int prcom(int i)
 		printf(" ???");
 		return(0);
 	}
-	/* Read SP from offset 0xEFFE (top of user stack area) */
-	if (readword(&proc[i], 0xEFFE, &sp) != 0)
+	/* Read SP from offset USTACK-2 top of user stack area) */
+	if (readword(&proc[i], USTACK-2, &sp) != 0)
 		return(0);
 	
 	/* Read argc from [sp] */

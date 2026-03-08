@@ -63,7 +63,7 @@
 #define DSIZE   16      /* data segment page count = offset to code segment */
 #define PAGESIZ 4096    /* page size */
 #define USPACE  0x20    /* start of user space page */
-#define USTACK  0xF000  /* top of user stack */
+#define USTACK  0xFC00  /* top of user stack */
 #define KSSIZE  365     /* size of kernel stack 365 words */
 #define NULL    0
 #define NODEV   (-1)
