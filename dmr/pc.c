@@ -2,12 +2,12 @@
 
 void savu(struct proc *p)
 {
-    memcpy(MK_FP(p->p_addr*(PAGESIZ/16), USTACK), &u, sizeof(u));
+    fmemcpy(USTACK, p->p_addr*(PAGESIZ/16), &u, FP_SEG(&u), sizeof(u));
 }
 
 void retu(struct proc *p)
 {
-    memcpy(&u, MK_FP(p->p_addr*(PAGESIZ/16), USTACK), sizeof(u));
+    fmemcpy(&u, FP_SEG(&u), USTACK, p->p_addr*(PAGESIZ/16), sizeof(u));
 }
 
 void spl0(void)
@@ -64,21 +64,21 @@ int suword(int addr, int value)
     return 0;
 }
 
-#define PAGE_ADDR(page) MK_FP(page*(PAGESIZ/16), 0)
+#define PAGE_ADDR(page) (page*(PAGESIZ/16))
 
 void copyseg(uint src, uint dst)
 {
-    memcpy(PAGE_ADDR(dst), PAGE_ADDR(src), PAGESIZ);
+    fmemcpy(0, PAGE_ADDR(dst), 0, PAGE_ADDR(src), PAGESIZ);
 }
 
 void clearseg(uint dst)
 {
-    memset(PAGE_ADDR(dst), 0, PAGESIZ);
+    fmemset(0, PAGE_ADDR(dst), 0, PAGESIZ);
 }
 
 void copyout(uint srcAddr, int iSize, uint dstAddr, uint dstSeg)
 {
-    memcpy(MK_FP(dstSeg, dstAddr), MK_FP(core_cs, srcAddr), iSize);
+    fmemcpy(dstAddr, dstSeg, srcAddr, core_cs, iSize);
 }
 
 typedef union {

@@ -1,4 +1,4 @@
-PUBLIC  _clock_isr, _trap_isr, _getps, _setps, _save, _use_resume_stack, _do_resume, _memcpy, _memset
+PUBLIC  _clock_isr, _trap_isr, _getps, _setps, _save, _use_resume_stack, _do_resume, _fmemcpy, _fmemset
 PUBLIC  _bios_getc, _bios_putc, _move_to_user_mode, _ide_isr, _kbd_isr, _uart_isr, _common_isr
 EXTRN   _main: near, _u: near, _resume_SI: near
 EXTRN   _isr_savuar: near, _isr_router: near, _clock: near, _check_runrun: near
@@ -250,8 +250,8 @@ _move_to_user_mode proc    near
     retf
 _move_to_user_mode endp
 
-; void memcpy(void far *dst, const void far *src, int n)
-_memcpy proc    near
+; void fmemcpy(void *doff, uint dseg, const void *soff, uint sseg, uint n);
+_fmemcpy proc    near
     push bp
     mov bp,sp
     push si
@@ -271,10 +271,10 @@ _memcpy proc    near
     pop si
     pop bp
     ret
-_memcpy endp
+_fmemcpy endp
 
-; void memset(void far *addr, int c, unsigned len)
-_memset proc    near
+; void fmemset(void *doff, uint dseg, int c, uint len);
+_fmemset proc    near
     push bp
     mov bp,sp
     push di
@@ -291,7 +291,7 @@ _memset proc    near
     pop di
     pop bp
     ret
-_memset endp
+_fmemset endp
 
 ; int bios_getc(void)
 _bios_getc  proc    near

@@ -266,6 +266,8 @@ void rkintr(void);
 /* m86.asm */
 void memcpy(void far *dst, const void far *src, uint n);
 void memset(void far *addr, int c, uint len);
+void fmemcpy(void *doff, uint dseg, const void *soff, uint sseg, uint n);
+void fmemset(void *doff, uint dseg, int c, uint len);
 int getps(void);
 void setps(int integ);
 int bios_getc(void);

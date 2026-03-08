@@ -126,6 +126,7 @@ void psig(void)
     register struct proc *rp;
     int far *ustack;
     struct ctx far *ctx;
+    uint ss, sp;
 
     rp = u.u_procp;
     n = rp->p_sig;
@@ -135,8 +136,10 @@ void psig(void)
         if(n != SIGINS && n != SIGTRC)
             u.u_signal[n] = 0;        
         u.u_stack[KSSIZE - 2] -= 24;  /* duplicate interrupt stack frame */
-        ustack = (int far *)MK_FP(u.u_stack[KSSIZE - 1], u.u_stack[KSSIZE - 2]);
-        memcpy(ustack, &ustack[12], 24);
+        ss = u.u_stack[KSSIZE - 1];
+        sp = u.u_stack[KSSIZE - 2];
+        ustack = (int far *)MK_FP(ss, sp);
+        fmemcpy(ustack, ss, &ustack[12], ss, 24);
         ctx = (struct ctx far *)ustack;
         ctx->ip = 0x0006;
         ctx->si = p;
