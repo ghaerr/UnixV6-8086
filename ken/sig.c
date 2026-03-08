@@ -138,8 +138,8 @@ void psig(void)
         u.u_stack[KSSIZE - 2] -= 24;  /* duplicate interrupt stack frame */
         ss = u.u_stack[KSSIZE - 1];
         sp = u.u_stack[KSSIZE - 2];
+        fmemcpy(sp, ss, sp+24, ss, 24);
         ustack = (int far *)MK_FP(ss, sp);
-        fmemcpy(ustack, ss, &ustack[12], ss, 24);
         ctx = (struct ctx far *)ustack;
         ctx->ip = 0x0006;
         ctx->si = p;

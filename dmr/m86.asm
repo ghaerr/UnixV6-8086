@@ -1,4 +1,5 @@
 PUBLIC  _clock_isr, _trap_isr, _getps, _setps, _save, _use_resume_stack, _do_resume, _fmemcpy, _fmemset
+PUBLIC _peekb, _peekw, _pokeb, _pokew
 PUBLIC  _bios_getc, _bios_putc, _move_to_user_mode, _ide_isr, _kbd_isr, _uart_isr, _common_isr
 EXTRN   _main: near, _u: near, _resume_SI: near
 EXTRN   _isr_savuar: near, _isr_router: near, _clock: near, _check_runrun: near
@@ -292,6 +293,49 @@ _fmemset proc    near
     pop bp
     ret
 _fmemset endp
+
+; uint peekb (uint off, uint seg)
+_peekb proc     near
+    mov    dx,ds
+    mov    bx,sp
+    lds    bx,[bx+2]
+    mov    al,[bx]
+    xor    ah,ah
+    mov    ds,dx
+    ret
+_peekb endp
+
+; uint peekw (uint off, uint seg)
+_peekw proc     near
+    mov    dx,ds
+    mov    bx,sp
+    lds    bx,[bx+2]
+    mov    ax,[bx]
+    mov    ds,dx
+    ret
+_peekw endp
+
+; void pokeb (uint off, uint seg, byte__t val)
+_pokeb proc     near
+    mov    dx,ds
+    mov    bx,sp
+    mov    ax,[bx+6]
+    lds    bx,[bx+2]
+    mov    [bx],al
+    mov    ds,dx
+    ret
+_pokeb endp
+
+; void pokew (uint off, uint seg, uint val)
+_pokew proc     near
+    mov    dx,ds
+    mov    bx,sp
+    mov    ax,[bx+6]
+    lds    bx,[bx+2]
+    mov    [bx],ax
+    mov    ds,dx
+    ret
+_pokew endp
 
 ; int bios_getc(void)
 _bios_getc  proc    near

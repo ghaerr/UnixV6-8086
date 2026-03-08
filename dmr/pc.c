@@ -2,12 +2,12 @@
 
 void savu(struct proc *p)
 {
-    fmemcpy(USTACK, p->p_addr*(PAGESIZ/16), &u, FP_SEG(&u), sizeof(u));
+    fmemcpy((char *)USTACK, p->p_addr*(PAGESIZ/16), &u, FP_SEG(&u), sizeof(u));
 }
 
 void retu(struct proc *p)
 {
-    fmemcpy(&u, FP_SEG(&u), USTACK, p->p_addr*(PAGESIZ/16), sizeof(u));
+    fmemcpy(&u, FP_SEG(&u), (char *)USTACK, p->p_addr*(PAGESIZ/16), sizeof(u));
 }
 
 void spl0(void)
@@ -40,27 +40,27 @@ void spl7(void)
     disable();
 }
 
-#define user_space_io_pointer MK_FP(u.u_procp->p_addr*(PAGESIZ/16), addr)
+#define PROC_SEG    (u.u_procp->p_addr*(PAGESIZ/16))
 
 char fubyte(int addr)
 {
-    return *(char far *)user_space_io_pointer;
+    return peekb(addr, PROC_SEG);
 }
 
 int fuword(int addr)
 {
-    return *(int far *)user_space_io_pointer;
+    return peekw(addr, PROC_SEG);
 }
 
 int subyte(int addr, char ch)
 {
-    *(char far *)user_space_io_pointer = ch;
+    pokeb(addr, PROC_SEG, ch);
     return 0;
 }
 
 int suword(int addr, int value)
 {
-    *(int far *)user_space_io_pointer = value;
+    pokew(addr, PROC_SEG, value);
     return 0;
 }
 
