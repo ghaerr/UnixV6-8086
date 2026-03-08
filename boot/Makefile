@@ -4,7 +4,7 @@ all : Unix360.img unix0_rk.img unix.img
 
 # Build boot sector and generate floppy image
 Unix360.img: ../unix.com bootsect.asm
-	wasm -bt=DOS -mt -1 bootsect.asm -fo=bootsect.obj
+	wasm -zq -bt=DOS -mt -1 bootsect.asm -fo=bootsect.obj
 	wlink $(LDFLAGS) SYSTEM dos com FILE bootsect.obj OPTION nodefaultlibs NAME boot.com
 	# HEADS = 2 * TRACKS = 40 * SECTORS_PER_TRACK = 9 = 720
 	dd if=/dev/zero of=Unix360.img bs=512 count=720

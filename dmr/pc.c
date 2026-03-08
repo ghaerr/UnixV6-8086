@@ -177,11 +177,8 @@ void putck(char c)
 
 void setvect(int vectnumber, uint vectfunc)
 {
-    uint far *pvect;
-    
-    pvect = (uint far *)MK_FP(0x0000, vectnumber * 4);
-    pvect[0] = vectfunc;
-    pvect[1] = core_cs;
+    pokew(vectnumber * 4 + 0, 0, vectfunc);
+    pokew(vectnumber * 4 + 2, 0, core_cs);
 }
 
 #define  TICK_T0_8254_CWR             0x43       /* 8254 PIT Control Word Register address.            */

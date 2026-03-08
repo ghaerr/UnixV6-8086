@@ -29,7 +29,7 @@ x: kclean kimage b
 ######### kernel build #########
 
 dmr/m86.obj: dmr/m86.asm
-	wasm -bt=DOS -mt -0 $< -fo=$@
+	wasm -zq -bt=DOS -mt -0 $< -fo=$@
 
 OBJS =              \
     dmr/bio.obj     \
