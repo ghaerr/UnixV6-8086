@@ -93,12 +93,12 @@ void exec(void)
         u.u_error = ENOEXEC;
         goto bad;
     }
-    if (u.u_hdr[4] >= (USIZE-16)*PAGESIZ) {
+    if (u.u_hdr[4] >= (PSIZE-16)*PAGESIZ) {
         u.u_error = E2BIG;
         goto bad;
     }
 
-    for(c=0; c<USIZE; c++)
+    for(c=0; c<PSIZE; c++)
         clearseg(u.u_procp->p_addr+c);
 
     u.u_procp->p_addr += DSIZE;

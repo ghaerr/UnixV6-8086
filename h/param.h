@@ -20,6 +20,14 @@
 #define NCLIST  100     /* max total clist size */
 #define HZ      60      /* Ticks/second of the clock */
 
+#define PSIZE   18      /* fixed process size in pages */
+#define DSIZE   16      /* data segment page count (also offset to code segment) */
+#define USPACE  0x20    /* start of user space page */
+#define USTACK  0xFC00  /* top of user stack and start of user struct */
+#define KSSIZE  365     /* size of kernel stack 365 words */
+#define PAGESIZ 4096    /* page size */
+#define LOADSEG 0x1000  /* kernel segment load address (=CS, =DS) */
+
 /*
  * priorities
  * probably should not be
@@ -59,12 +67,7 @@
  * cannot be changed
  */
 
-#define USIZE   18      /* page count of user block */
-#define DSIZE   16      /* data segment page count = offset to code segment */
-#define PAGESIZ 4096    /* page size */
-#define USPACE  0x20    /* start of user space page */
-#define USTACK  0xFC00  /* top of user stack */
-#define KSSIZE  365     /* size of kernel stack 365 words */
+#define USIZE   16      /* size of user block (*64) */
 #define NULL    0
 #define NODEV   (-1)
 #define ROOTINO 1       /* i number of all roots */

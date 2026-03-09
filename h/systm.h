@@ -63,6 +63,7 @@ struct sysent
 extern struct sysent sysent[64];
 
 extern int core_cs;     /* kernel code segment, reg CS */
+extern int core_ds;     /* kernel data segment, reg DS */
 extern int core_spl;    /* system priority level */
 
 /* trap.c */
@@ -266,10 +267,10 @@ void rkintr(void);
 /* m86.asm */
 void fmemcpy(void *doff, uint dseg, const void *soff, uint sseg, uint n);
 void fmemset(void *doff, uint dseg, int c, uint len);
-uint peekb(uint off, uint seg);
-uint peekw(uint off, uint seg);
-void pokeb(uint off, uint seg, uint val);
-void pokew(uint off, uint seg, uint val);
+uint rdbyte(uint off, uint seg);
+uint rdword(uint off, uint seg);
+void wrbyte(uint off, uint seg, uint val);
+void wrword(uint off, uint seg, uint val);
 int getps(void);
 void setps(int integ);
 int bios_getc(void);

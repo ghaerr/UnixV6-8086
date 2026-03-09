@@ -15,7 +15,7 @@ start proc near
         mov ax, 800h            ; Set SP below 0x10000
         mov sp, ax
 
-        mov ax, 1000h           ; Load segment for 64K at 0x10000
+        mov ax, 1000h           ; Load segment for 64K at 0x10000 (=LOADSEG)
         mov es, ax              ; ES = 0x1000
         mov bx, 100h            ; Set BX (offset) to 0x100
 

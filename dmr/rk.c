@@ -92,7 +92,7 @@ void devstart(struct buf *bp)
         off = 0;
         n = (PAGESIZ/512) * bp->b_wcount;
     } else {
-        seg = core_cs;
+        seg = core_ds;
         off = bp->b_addr;
         n = 1;
     }

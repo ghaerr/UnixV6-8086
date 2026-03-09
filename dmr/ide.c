@@ -54,7 +54,7 @@ void idestart(int sector, int *data, uint seg)
     {
         outportb(0x1f7, IDE_CMD_WRITE);
         for (i = 0; i < 256; i++)
-            outport(0x1f0, peekw(data+i, seg));
+            outport(0x1f0, rdword(data+i, seg));
     }
     else
     {
@@ -83,7 +83,7 @@ void ideintr(void)
     if (io_cmd != 0)
     {
         for (i = 0; i < 256; i++)
-            pokew(io_buf+i, io_seg, inport(0x1f0));
+            wrword(io_buf+i, io_seg, inport(0x1f0));
     }
     io_buf += 256;
 

@@ -4,7 +4,8 @@ struct user u;
 struct proc proc[NPROC];
 struct inode *rootdir;
 
-int core_cs;
+int core_cs = LOADSEG;
+int core_ds = LOADSEG;
 int core_spl;
 
 int mpid;
@@ -82,8 +83,8 @@ void main()
     /*
      * set up system process
      */
-    proc[0].p_addr = core_cs/(PAGESIZ/16);
-    proc[0].p_size = USIZE;
+    proc[0].p_addr = core_ds/(PAGESIZ/16);
+    proc[0].p_size = PSIZE;
     proc[0].p_stat = SRUN;
     proc[0].p_flag |= SLOAD|SSYS;
     u.u_procp = &proc[0];

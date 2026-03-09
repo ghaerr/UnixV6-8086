@@ -2,12 +2,12 @@
 
 void savu(struct proc *p)
 {
-    fmemcpy((char *)USTACK, p->p_addr*(PAGESIZ/16), &u, FP_SEG(&u), sizeof(u));
+    fmemcpy((char *)USTACK, p->p_addr*(PAGESIZ/16), &u, core_ds, sizeof(u));
 }
 
 void retu(struct proc *p)
 {
-    fmemcpy(&u, FP_SEG(&u), (char *)USTACK, p->p_addr*(PAGESIZ/16), sizeof(u));
+    fmemcpy(&u, core_ds, (char *)USTACK, p->p_addr*(PAGESIZ/16), sizeof(u));
 }
 
 void spl0(void)
@@ -40,45 +40,45 @@ void spl7(void)
     disable();
 }
 
-#define PROC_SEG    (u.u_procp->p_addr*(PAGESIZ/16))
+#define PROC_DSEG   (u.u_procp->p_addr*(PAGESIZ/16))
 
 char fubyte(int addr)
 {
-    return peekb(addr, PROC_SEG);
+    return rdbyte(addr, PROC_DSEG);
 }
 
 int fuword(int addr)
 {
-    return peekw(addr, PROC_SEG);
+    return rdword(addr, PROC_DSEG);
 }
 
 int subyte(int addr, char ch)
 {
-    pokeb(addr, PROC_SEG, ch);
+    wrbyte(addr, PROC_DSEG, ch);
     return 0;
 }
 
 int suword(int addr, int value)
 {
-    pokew(addr, PROC_SEG, value);
+    wrword(addr, PROC_DSEG, value);
     return 0;
 }
 
-#define PAGE_ADDR(page) (page*(PAGESIZ/16))
+#define PAGE_SEG(page) (page*(PAGESIZ/16))
 
 void copyseg(uint src, uint dst)
 {
-    fmemcpy(0, PAGE_ADDR(dst), 0, PAGE_ADDR(src), PAGESIZ);
+    fmemcpy(0, PAGE_SEG(dst), 0, PAGE_SEG(src), PAGESIZ);
 }
 
 void clearseg(uint dst)
 {
-    fmemset(0, PAGE_ADDR(dst), 0, PAGESIZ);
+    fmemset(0, PAGE_SEG(dst), 0, PAGESIZ);
 }
 
 void copyout(uint srcAddr, int iSize, uint dstAddr, uint dstSeg)
 {
-    fmemcpy(dstAddr, dstSeg, srcAddr, core_cs, iSize);
+    fmemcpy(dstAddr, dstSeg, srcAddr, core_ds, iSize);
 }
 
 typedef union {
@@ -177,8 +177,8 @@ void putck(char c)
 
 void setvect(int vectnumber, uint vectfunc)
 {
-    pokew(vectnumber * 4 + 0, 0, vectfunc);
-    pokew(vectnumber * 4 + 2, 0, core_cs);
+    wrword(vectnumber * 4 + 0, 0, vectfunc);
+    wrword(vectnumber * 4 + 2, 0, core_cs);
 }
 
 #define  TICK_T0_8254_CWR             0x43       /* 8254 PIT Control Word Register address.            */
@@ -207,8 +207,6 @@ void PC_SetTickRate(void)
 
 void pc_init(void)
 {
-    core_cs = FP_SEG(&core_cs);
-
 #ifdef KL_BACKEND_UART
     uart_init();
     setvect(PC_UART_INTR, (uint)uart_isr);

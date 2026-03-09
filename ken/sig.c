@@ -124,8 +124,6 @@ void psig(void)
 {
     register int n, p;
     register struct proc *rp;
-    //int far *ustack;
-    //struct ctx far *ctx;
     uint ss, sp;
 
     rp = u.u_procp;
@@ -139,22 +137,14 @@ void psig(void)
         ss = u.u_stack[KSSIZE - 1];
         sp = u.u_stack[KSSIZE - 2];
         fmemcpy(sp, ss, sp+24, ss, 24);
-        //ustack = (int far *)MK_FP(ss, sp);
-        //ctx = (struct ctx far *)ustack;
-        //ctx->ip = 0x0006;
-        //ctx->si = p;
-        pokew(sp+R_IP, ss, 0x0006);   /* _callsig entry point */
-        pokew(sp+R_SI, ss, p);
+        suword(sp+R_IP, 0x0006);      /* _callsig entry point */
+        suword(sp+R_SI, p);
 
-        //ctx = (struct ctx far *)&ustack[12];
         /* ip, cs, flag = ax, flag, return address */
         sp += 24;
-        //ctx->cs = ctx->flag;
-        //ctx->flag = ctx->ip;
-        //ctx->ip = ctx->ax;
-        pokew(sp+R_CS, ss, peekw(sp+R_FLAG, ss));
-        pokew(sp+R_FLAG, ss, peekw(sp+R_IP, ss));
-        pokew(sp+R_IP, ss, peekw(sp+R_AX, ss));
+        suword(sp+R_CS, fuword(sp+R_FLAG));
+        suword(sp+R_FLAG, fuword(sp+R_IP));
+        suword(sp+R_IP, fuword(sp+R_AX));
         return;
     }
     switch(n) {

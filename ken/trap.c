@@ -41,20 +41,13 @@ void nullsys(void)
 
 void trap_epilogue(void)
 {
-    //struct ctx far *ctx;
-    uint ss, sp;
+    uint sp;
 
-    ss = u.u_stack[KSSIZE - 1];
     sp = u.u_stack[KSSIZE - 2];
-    //ctx = (struct ctx far *)MK_FP(ss, sp);
-    //ctx->ax = u.u_ar0[R0];
-    //ctx->bx = u.u_ar0[R1];
-    //ctx->cx = u.u_ar0[R2];
-    //ctx->dx = u.u_ar0[R3];
-    pokew(sp+R_AX, ss, u.u_ar0[R0]);
-    pokew(sp+R_BX, ss, u.u_ar0[R1]);
-    pokew(sp+R_CX, ss, u.u_ar0[R2]);
-    pokew(sp+R_DX, ss, u.u_ar0[R3]);
+    suword(sp+R_AX, u.u_ar0[R0]);
+    suword(sp+R_BX, u.u_ar0[R1]);
+    suword(sp+R_CX, u.u_ar0[R2]);
+    suword(sp+R_DX, u.u_ar0[R3]);
 }
 
 void trap(void)

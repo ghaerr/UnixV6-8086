@@ -454,21 +454,12 @@ void resume(struct proc *p, label_t ctx)
 
 void estabur(uint addr)
 {
-    //struct user far *pu;
-    //struct ctx far *ctx;
     uint ss, sp;
 
     ss = addr * (PAGESIZ / 16);
-    //pu = (struct user far *)MK_FP(ss, USTACK);
-    //pu->u_stack[KSSIZE - 1] = ss;    /* SS */
-    pokew(USTACK+USER_SS, ss, ss);      /* ss->u.u_stack[KSSIZE - 1] = ss */
-    //sp = pu->u_stack[KSSIZE - 2];
-    sp = peekw(USTACK+USER_SP, ss);     /* sp = ss->u.u_stack[KSSIZE - 2] */
-    //ctx = (struct ctx far *)MK_FP(ss, sp);
-    //ctx->cs = ss + DSIZE * (PAGESIZ/16);
-    //ctx->ds = ss;
-    //ctx->es = ss;
-    pokew(sp+R_CS, ss, ss + DSIZE * (PAGESIZ/16));  /* cseg is dseg + DSIZE */
-    pokew(sp+R_DS, ss, ss);             /* DS = SS */
-    pokew(sp+R_ES, ss, ss);             /* ES = SS */
+    wrword(USTACK+USER_SS, ss, ss);     /* ss->u_stack[KSSIZE - 1] = ss */
+    sp = rdword(USTACK+USER_SP, ss);    /* sp = ss->u_stack[KSSIZE - 2] */
+    wrword(sp+R_CS, ss, ss + DSIZE * (PAGESIZ/16));  /* cseg is dseg + DSIZE */
+    wrword(sp+R_DS, ss, ss);            /* DS = SS */
+    wrword(sp+R_ES, ss, ss);            /* ES = SS */
 }
