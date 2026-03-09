@@ -50,6 +50,10 @@ struct user
     int u_stack[KSSIZE];    /* kernel mode stack */
 };
 
+/* register offsets in struct user */
+#define USER_SS 1022        /* offset of u_stack[KSSIZE - 1] */
+#define USER_SP 1020        /* offset of u_stack[KSSIZE - 1] */
+
 extern struct user u;       /* current u struct */
 
 /* u_error codes */

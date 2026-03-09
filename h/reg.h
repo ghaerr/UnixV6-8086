@@ -32,22 +32,21 @@ struct ctx
     unsigned    sp;
 };
 
-/* register offsets from R_AX in CTX */
-#define R_DS (-5)
-#define R_ES (-4)
-#define R_DX (-3)
-#define R_CX (-2)
-#define R_BX (-1)
-#define R_AX (0)
-#define R_DI (1)
-#define R_SI (2)
-#define R_BP (3)
-#define R_IP (4)
-#define R_CS (5)
-#define R_FLAGS (6)
-
-/* offset to above register offsets from R_DS in CTX */
-#define CTX (-R_DS)
+/* register offsets in struct ctx */
+#define R_DS    0
+#define R_ES    2
+#define R_DX    4
+#define R_CX    6
+#define R_BX    8
+#define R_AX    10
+#define R_DI    12
+#define R_SI    14
+#define R_BP    16
+#define R_IP    18
+#define R_CS    20
+#define R_FLAG  22
+#define R_SS    24
+#define R_SP    26
 
 /*
  * Location of the users' stored
