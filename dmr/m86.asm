@@ -1,5 +1,6 @@
 PUBLIC  _clock_isr, _trap_isr, _getps, _setps, _save, _use_resume_stack, _do_resume, _fmemcpy, _fmemset
 PUBLIC _rdbyte, _rdword, _wrbyte, _wrword
+PUBLIC _outport, _outportb, _inport, _inportb, _idle
 PUBLIC  _bios_getc, _bios_putc, _move_to_user_mode, _ide_isr, _kbd_isr, _uart_isr, _common_isr
 EXTRN   _main: near, _u: near, _resume_SI: near
 EXTRN   _isr_savuar: near, _isr_router: near, _clock: near, _check_runrun: near
@@ -344,6 +345,57 @@ _wrword proc    near
     mov    bx,cx
     ret
 _wrword endp
+
+; void outport(unsigned port, unsigned val)
+_outport proc       near
+    mov    cx,bx
+    mov    bx,sp
+    mov    dx,[bx+2]
+    mov    ax,[bx+4]
+    out    dx,ax
+    mov    bx,cx
+    ret
+_outport endp
+
+; void outportb(unsigned port, unsigned char val)
+_outportb proc       near
+    mov    cx,bx
+    mov    bx,sp
+    mov    dx,[bx+2]
+    mov    al,[bx+4]
+    out    dx,al
+    mov    bx,cx
+    ret
+_outportb endp
+
+; unsigned inport(unsigned port)
+_inport  proc       near
+    mov    cx,bx
+    mov    bx,sp
+    mov    dx,[bx+2]
+    in     ax,dx
+    mov    bx,cx
+    ret
+_inport  endp
+
+; unsigned char inportb(unsigned port)
+_inportb  proc       near
+    mov    cx,bx
+    mov    bx,sp
+    mov    dx,[bx+2]
+    in     al,dx
+    xor    ah,ah
+    mov    bx,cx
+    ret
+_inportb  endp
+
+; void idle(void)
+_idle proc       near
+    sti
+    hlt
+    cli
+    ret
+_idle endp
 
 ; int bios_getc(void)
 _bios_getc  proc    near

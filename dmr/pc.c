@@ -1,5 +1,10 @@
 #include "os.h"
 
+#ifdef __WATCOMC__
+#define disable()   { _asm cli }
+#define enable()    { _asm sti }
+#endif
+
 void savu(struct proc *p)
 {
     fmemcpy((char *)USTACK, p->p_addr*(PAGESIZ/16), &u, core_ds, sizeof(u));
@@ -130,40 +135,6 @@ int lshift (int num[2], int bits)
     return (int)a.i32;
 }
 
-void outport(unsigned port, unsigned val)
-{
-    _asm mov dx, port
-    _asm mov ax, val
-    _asm out dx, ax
-}
-
-void outportb(unsigned port, unsigned char val)
-{
-    _asm mov dx, port
-    _asm mov al, val
-    _asm out dx, al
-}
-
-unsigned inport(unsigned port)
-{
-    _asm mov dx,port
-    _asm in  ax,dx
-}
-
-unsigned char inportb(unsigned port)
-{
-    _asm mov dx,port
-    _asm in  al,dx
-    _asm xor ah,ah
-}
-
-void idle(void)
-{
-    _asm sti
-    _asm hlt
-    _asm cli
-}
-
 void putck(char c)
 { 
     if (c == '\n')
@@ -223,3 +194,39 @@ void pc_init(void)
 
     setvect(PC_UNIX_INTR, (uint)trap_isr);
 }
+
+#if 0
+void outport(unsigned port, unsigned val)
+{
+    _asm mov dx, port
+    _asm mov ax, val
+    _asm out dx, ax
+}
+
+void outportb(unsigned port, unsigned char val)
+{
+    _asm mov dx, port
+    _asm mov al, val
+    _asm out dx, al
+}
+
+unsigned inport(unsigned port)
+{
+    _asm mov dx,port
+    _asm in  ax,dx
+}
+
+unsigned char inportb(unsigned port)
+{
+    _asm mov dx,port
+    _asm in  al,dx
+    _asm xor ah,ah
+}
+
+void idle(void)
+{
+    _asm sti
+    _asm hlt
+    _asm cli
+}
+#endif
