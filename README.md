@@ -27,7 +27,7 @@ The RealXV6 project uses the simple DOS .com executable format for the kernel
 and all applications. In order to host a larger C compiler able to compile itself,
 the UNIX processes need to support seperate I & D (code and data), which allow
 for a max 64K code segment and additional 64K data segment. For this reason,
-the UNIX executable format has been enhanced to support a UNIX v7-like a.out format,
+the UNIX executable format has been enhanced to support a UNIX V7-like a.out format,
 currently in use by ELKS and 16-bit MINIX applications.
 
 Additionally, non-standard C language features including far pointers and inline
@@ -40,7 +40,7 @@ executable format.
 ## How to build
 
 The original OpenWatcom C `wmake` build has been replaced with GNU `make`,
-and the kernel can currently be built bu either OpenWatcom or ia16-elf-gcc.
+and the kernel can currently be built by either OpenWatcom or ia16-elf-gcc.
 The applications require building using GCC, since the a.out executable
 format is being used.
 
@@ -48,9 +48,10 @@ The ia16-elf-gcc compiler can be installed by building ELKS.
 
 To build the kernel, all applications and boot images using ia16-elf-gcc:
 ```
-$ make -f Makefile.gcc
+$ make
 ```
-This will build the kernel unix.com, and a floppy boot image in boot/Unix306.img and
+This will build the kernel executable unix.com,
+and a floppy boot image in boot/Unix306.img and
 root UNIX filesystem in boot/Unix.img. Either QEMU or Bochs can be used
 to boot UNIX V6 on the PC:
 ```
