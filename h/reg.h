@@ -15,7 +15,7 @@
 */
 struct ctx
 {
-    unsigned    ds;
+    unsigned    ds;     /* 0 */
     unsigned    es;
     unsigned    dx;
     unsigned    cx;
@@ -25,11 +25,11 @@ struct ctx
     unsigned    si;
     unsigned    bp;
     unsigned    ip;
-    unsigned    cs;
-    unsigned    flag;
+    unsigned    cs;     /* 20 */
+    unsigned    flag;   /* 22 */
     /* not in stack frame */
-    unsigned    ss;
-    unsigned    sp;
+    unsigned    ss;     /* 24 */
+    unsigned    sp;     /* 26 */
 };
 
 /* register offsets in struct ctx */

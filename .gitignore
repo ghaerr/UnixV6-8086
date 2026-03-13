@@ -4,3 +4,6 @@ dmr/*.obj
 boot/*.obj
 boot/*.img
 boot/*.com
+ken/*.o
+dmr/*.o
+gcc/*.o

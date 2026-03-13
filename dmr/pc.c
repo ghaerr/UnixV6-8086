@@ -5,6 +5,19 @@
 #define enable()    { _asm sti }
 #endif
 
+#ifdef __ia16__
+#define disable()               \
+        asm volatile ("cli\n"   \
+            : /* no output */   \
+            : /* no input */    \
+            :"memory")
+#define enable()                \
+        asm volatile ("sti\n"   \
+            : /* no output */   \
+            : /* no input */    \
+            :"memory")
+#endif
+
 void savu(struct proc *p)
 {
     fmemcpy((char *)USTACK, p->p_addr*(PAGESIZ/16), &u, core_ds, sizeof(u));

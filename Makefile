@@ -1,4 +1,4 @@
-# master and kernel Makefile
+# kernel Makefile using OpenWatcom C
 
 CC = wcc
 CFLAGS = -i=h -ms -0 -s -zls -ecc -bt=dos -ohs -zq -j -zl

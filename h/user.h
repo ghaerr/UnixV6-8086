@@ -45,7 +45,8 @@ struct user
     int u_cstime[2];        /* sum of childs' stimes */
     int u_ar0[4];           /* users saved register R0 - R3 */
     char u_intflg;          /* catch intr from sys */
-    char padding[25];
+    char u_pad;
+    char padding[24];
     int u_hdr[16];          /* a.out hdr for exec() */
     int u_stack[KSSIZE];    /* kernel mode stack */
 };

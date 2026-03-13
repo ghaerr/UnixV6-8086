@@ -30,7 +30,7 @@ struct buf
     void *b_addr;           /* low order core address */
     void *b_xmem;           /* high order core address */
     int b_blkno;            /* block # on device */
-    char b_error;           /* returned after I/O */
+    int b_error;            /* returned after I/O */
     char *b_resid;          /* words not transferred after error */
 };
 extern struct buf buf[NBUF];
