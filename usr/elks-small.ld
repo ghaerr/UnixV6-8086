@@ -1,4 +1,4 @@
-/* ELKS small model a.out output format for ia16-elf-gcc */
+/* ELKS-compatible small model a.out output format */
 ENTRY(_start)
 
 SECTIONS {

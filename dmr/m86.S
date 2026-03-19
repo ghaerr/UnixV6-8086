@@ -12,7 +12,7 @@
     .extern trap0, trap
     .data
     .extern u, resume_SI
-    .extern _bdata, _edata
+    .extern _edata, _end
 
     .text
     .globl _start
@@ -26,8 +26,8 @@ _start:                 // org 0x100
 
 // Reset uninitialized data area
      xor %ax, %ax
-     mov $_bdata, %di
-     mov $_edata, %cx
+     mov $_edata, %di
+     mov $_end, %cx
      sub %di, %cx
      cld
      rep stosb

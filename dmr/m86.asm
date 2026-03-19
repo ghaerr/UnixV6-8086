@@ -21,8 +21,8 @@ STARTX          PROC    NEAR
 
 ; Reset uninitialized data area
     xor     ax, ax
-    mov     di, offset DGROUP: bdata@
-    mov     cx, offset DGROUP: edata@
+    mov     di, offset DGROUP: edata@
+    mov     cx, offset DGROUP: end@
     sub     cx, di
     cld
     rep     stosb
@@ -424,13 +424,13 @@ _bios_putc  proc    near
 _bios_putc  endp
 
 _BSS    SEGMENT word public 'BSS'
-bdata@          label   byte
+edata@          label   byte
 resume_stack    label   word
     db  288 dup (?)
 _BSS   ENDS
 
 _BSSEND         SEGMENT BYTE PUBLIC 'BSSEND'
-edata@          label   byte
+end@            label   byte
 _BSSEND         ENDS
 
     END STARTX

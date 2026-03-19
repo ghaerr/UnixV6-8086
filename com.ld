@@ -1,3 +1,4 @@
+/* DOS-compatible kernel .com output format */
 OUTPUT_FORMAT(binary)
 
 SECTIONS {
@@ -5,18 +6,19 @@ SECTIONS {
     .text : {
         *(.text .text.*)
     }
+    _etext = .;
 
     .data : {
         *(.rodata .rodata.*)
         *(.data .data.*)
     }
+    _edata = ALIGN(2);
 
-    _bdata = ALIGN(2);
     .bss : {
         *(.bss .bss.*)
         *(COMMON)
     }
-    _edata = ALIGN(2);
+    _end = ALIGN(2);
 
     /DISCARD/ : { *(.comment) }
 
