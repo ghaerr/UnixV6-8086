@@ -12,7 +12,14 @@
         .comm   r1,2
         .comm   r3,2
 
+        .global _edata,_end
+        .comm   _edata,0    // extern char _edata[] (start of .bss)
+        .comm   _end,0      // extern char _end[] (end of .bss)
+
         .text
+        .global _etext
+        .comm   _etext,0    // extern _etext() (end of .text)
+
         .global _start
         .extern main
 _start: jmp     1f

@@ -1,4 +1,5 @@
 usr/*.com
+usr/*.map
 ken/*.obj
 dmr/*.obj
 boot/*.obj

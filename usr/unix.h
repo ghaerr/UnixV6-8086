@@ -79,6 +79,9 @@ struct dirent {
 #define EPIPE   32
 
 extern int errno;
+extern _etext();        /* end of .text */
+extern char _edata[];   /* end of .data, start of .bss */
+extern char _end[];     /* end of .bss */
 
 /* file flags */
 #define FREAD   01

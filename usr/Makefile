@@ -10,10 +10,11 @@ WARNINGS = -Wno-implicit-int -Wno-implicit-function-declaration
 INCLUDES =
 DEFINES =
 CFLAGS = $(CLBASE) $(WARNINGS) $(INCLUDES) $(DEFINES) $(LOCALFLAGS)
+LDFLAGS = -T elks-small.ld -Wl,-Map=$(@:.com=).map
 LDLIBS =
 
 %.com: %.c
-	$(CC) $(CFLAGS) $(STARTUP) $^ -o $@ $(LIBS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(STARTUP) $^ -o $@ $(LDFLAGS) $(LIBS) $(LDLIBS)
 
 SOURCES=$(PROGS:.com=.c)
 #OBJECTS=$(SOURCES:.c=.o)
@@ -35,4 +36,4 @@ LIBS = syscall.c ulib.c ctime.c printf.c
 all: $(OBJECTS) $(PROGS)
 
 clean:
-	rm -f *.com *.o
+	rm -f *.com *.map *.o
