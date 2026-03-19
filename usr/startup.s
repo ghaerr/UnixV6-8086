@@ -1,4 +1,4 @@
-// C startup code for ia16-elf-gcc programs
+// C startup code for user mode programs compiled with ia16-elf-gcc
 
         .arch   i8086, nojumps
         .code16
@@ -13,7 +13,7 @@
         .comm   r3,2
 
         .global _edata,_end
-        .comm   _edata,0    // extern char _edata[] (start of .bss)
+        .comm   _edata,0    // extern char _edata[] (end of .data/start of .bss)
         .comm   _end,0      // extern char _end[] (end of .bss)
 
         .text
@@ -31,33 +31,33 @@ _start: jmp     1f
         int     $0x81
 
 _callsig:
-        call *%si           // call signal handler
-        pop %ax             // don't touch ds
-        pop %ax             // don't touch es
-        pop %dx
-        pop %cx
-        pop %bx
-        pop %ax
-        pop %di
-        pop %si
-        pop %bp
-        pop %ax             // ip, cs, flag = ax, flag, return address
+        call    *%si        // call signal handler
+        pop     %ax         // don't touch ds
+        pop     %ax         // don't touch es
+        pop     %dx
+        pop     %cx
+        pop     %bx
+        pop     %ax
+        pop     %di
+        pop     %si
+        pop     %bp
+        pop     %ax         // ip, cs, flag = ax, flag, return address
         popf
         ret
 
         .global syscall
 syscall:
-        pop %cx             // return address
-        pop %dx             // syscall number
-        pop %ax             // r0
-        int $0x81
-        or %dx,%dx
-        jz 1f               // no error
-        mov %dx,errno
-        mov $-1,%dx
-1:      mov %ax,r0
-        mov %bx,r1
-        mov %dx,r3
-        sub $4,%sp
-        push %cx
+        pop     %cx         // return address
+        pop     %dx         // syscall number
+        pop     %ax         // r0
+        int     $0x81
+        or      %dx,%dx
+        jz      1f          // no error
+        mov     %dx,errno
+        mov     $-1,%dx
+1:      mov     %ax,r0
+        mov     %bx,r1
+        mov     %dx,r3
+        sub     $4,%sp
+        push    %cx
         ret
