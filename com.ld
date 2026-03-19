@@ -6,6 +6,7 @@ SECTIONS {
     .text : {
         *(.text .text.*)
     }
+    . = ALIGN(2);
     _etext = .;
 
     .data : {

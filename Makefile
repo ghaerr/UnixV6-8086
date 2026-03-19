@@ -4,7 +4,7 @@ CC = ia16-elf-gcc
 CLBASE = -Os -mtune=i8086 -mcmodel=small
 CLBASE += -fno-inline -fno-builtin -ffreestanding
 CLBASE += -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-defer-pop
-CLBASE += -fpack-struct=2 -fcommon
+CLBASE += -fpack-struct=2
 INCLUDES = -Ih
 WARNINGS = -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-int
 CFLAGS = $(CLBASE) $(WARNINGS) $(INCLUDES) $(DEFINES) $(LOCALFLAGS)
